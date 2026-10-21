@@ -1,0 +1,21 @@
+# User data: photos and database stay on this machine
+storage/
+*.db
+*.sqlite3
+metrics.jsonl
+
+# Secrets
+.env
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# OS / editor
+.DS_Store
+.vscode/
+.claude/settings.local.json
