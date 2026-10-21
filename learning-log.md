@@ -17,4 +17,4 @@ One entry per step. Template:
 - What I did: Chose scope (Photo Vault), stack, hosting and repo visibility. Approved the step plan.
 - What Claude did: Drafted the step plan with role mapping, initialized the repo, wrote `.gitignore`, `README.md`, this log, the program charter and RAID log. Created the public repo, Milestones M0 to M6, the Project board, and issue #1 for Step 1.
 - Links: [repo](https://github.com/simonshenn/photo-vault), [board](https://github.com/users/simonshenn/projects/1), [milestones](https://github.com/simonshenn/photo-vault/milestones)
-- What I would change:
+- What I would change: Grant the GitHub project scope during `gh auth login` so board setup runs in one pass. Have Claude send one change per tool call, and approve or reject each call on its own, so the record shows what ran.
