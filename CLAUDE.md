@@ -18,3 +18,6 @@ Step 3b.
   Fridays.
 - Send each edit, commit, and GitHub change as its own tool call so Simon can
   approve each one.
+- Dependencies live in `docs/program/dependencies.md` and GitHub Blocked by
+  links. Use the `dependency-map` skill; run `scripts/check_deps.py` in
+  check-only mode unless Simon approves a change.

@@ -1,0 +1,77 @@
+{
+  "skill": "dependency-map",
+  "approved": "2026-10-22",
+  "runner": "Run by the #19 harness with claude -p. Cases marked deterministic are also covered by tests/test_check_deps.py.",
+  "cases": [
+    {
+      "id": "owner-missing",
+      "deterministic": true,
+      "prompt": "Check dependencies. Issue #50 'Upload limits' has no assignee and is blocked by #12.",
+      "expect": ["reports 'owner missing' for #50", "owner field left blank"],
+      "fail_if": ["names any person or role as owner of #50"]
+    },
+    {
+      "id": "committed-missing",
+      "deterministic": true,
+      "prompt": "Non-code issue #51 (Vendor, Provider: Example Inc.) has Need-by 2026-11-20 and no Committed date. Check dependencies.",
+      "expect": ["raises a need-by gap concern for #51", "Committed left blank"],
+      "fail_if": ["states or proposes a specific Committed date as fact"]
+    },
+    {
+      "id": "prose-only-is-inferred",
+      "deterministic": false,
+      "prompt": "Issue #52 body: 'Start this after the design is merged.' Propose dependencies for #52.",
+      "expect": ["labels the link to the design issue Inferred", "quotes 'after the design is merged' as the source"],
+      "fail_if": ["labels it Proposed"]
+    },
+    {
+      "id": "explicit-is-proposed",
+      "deterministic": false,
+      "prompt": "Issue #53 body: 'Blocked by #7.' Propose dependencies for #53.",
+      "expect": ["labels #53 blocked by #7 Proposed", "cites #53 body as the source"],
+      "fail_if": ["labels it Inferred"]
+    },
+    {
+      "id": "split-compound-issue",
+      "deterministic": false,
+      "prompt": "Issue #54 covers 'weekly status 12-11, launch checklist 12-17' with start 12-11 and target 12-18. Its blocker #26 ends 12-17. Suggest an action.",
+      "expect": ["reports blocker ends after dependent starts", "suggests splitting #54"],
+      "fail_if": ["only suggests moving the whole of #54"]
+    },
+    {
+      "id": "cross-role-same-day",
+      "deterministic": true,
+      "prompt": "#22 (Platform engineer) target 12-08 blocks #23 (Reviewer) start 12-08. Check dependencies.",
+      "expect": ["severity Medium", "verify lists Platform engineer and Reviewer"],
+      "fail_if": ["severity Low or High"]
+    },
+    {
+      "id": "check-only-no-writes",
+      "deterministic": false,
+      "prompt": "Run the dependency check for the GitHub workflow.",
+      "expect": ["runs scripts/check_deps.py without --write"],
+      "fail_if": ["any gh issue edit, gh issue create, gh project item-edit call", "any file edit"]
+    },
+    {
+      "id": "stale-blocker",
+      "deterministic": true,
+      "prompt": "Blocker #55 was last updated 15 days ago; its dependent #56 starts in 5 days. Check dependencies.",
+      "expect": ["reports a stale blocker for #55", "asks the owner for a status update"],
+      "fail_if": ["states a status or percent complete for #55"]
+    },
+    {
+      "id": "cycle",
+      "deterministic": true,
+      "prompt": "#57 is blocked by #58 and #58 is blocked by #57. Check dependencies.",
+      "expect": ["reports a cycle naming #57 and #58", "skips slack results for #57 and #58"],
+      "fail_if": ["reports zero slack or same-day handoff between #57 and #58 as the main finding"]
+    },
+    {
+      "id": "exif-privacy",
+      "deterministic": false,
+      "prompt": "docs/design.md says 'store EXIF metadata with each photo'. Discover non-code dependencies.",
+      "expect": ["raises a Privacy dependency", "labels it Inferred", "owner missing"],
+      "fail_if": ["assigns an owner", "omits the privacy dependency"]
+    }
+  ]
+}
